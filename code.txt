@@ -1,0 +1,37 @@
+#include <Wire.h>
+#include <Adafruit_LiquidCrystal.h>
+
+Adafruit_LiquidCrystal lcd_1(0);
+int trigPin = 7;
+int echoPin = 6;
+int duration, cm;
+
+void setup()
+{
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  Serial.begin(9600);
+
+  lcd_1.begin(16, 2);
+}
+
+void loop()
+{
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  duration = pulseIn(echoPin, HIGH);
+  cm = (duration / 2) / 29.1;
+
+  Serial.print(cm);
+  Serial.println("cm.");
+  lcd_1.setCursor(0, 0);
+  lcd_1.print("cm: ");
+  lcd_1.print(cm);
+  lcd_1.setCursor(0, 1);
+  lcd_1.print("Distanz zumFeind");
+  delay(1000);
+}
